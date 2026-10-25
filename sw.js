@@ -1,0 +1,20 @@
+// Keeps the game working offline once it has been opened from a web address.
+// Bump the version after changing the game so tablets fetch the new copy.
+const CACHE = 'play-and-find-v1';
+const FILES = ['unicorn-search.html', 'manifest.webmanifest', 'icon.svg', 'icon-192.png', 'icon-512.png'];
+
+self.addEventListener('install', e => {
+  e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES)).then(() => self.skipWaiting()));
+});
+self.addEventListener('activate', e => {
+  e.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim()));
+});
+// Network first (so updates arrive), the cached copy when offline.
+self.addEventListener('fetch', e => {
+  if (e.request.method !== 'GET') return;
+  e.respondWith(fetch(e.request).then(r => {
+    const copy = r.clone();
+    caches.open(CACHE).then(c => c.put(e.request, copy));
+    return r;
+  }).catch(() => caches.match(e.request, { ignoreSearch:true })));
+});
