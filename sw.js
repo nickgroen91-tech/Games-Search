@@ -1,6 +1,6 @@
 // Keeps the game working offline once it has been opened from a web address.
 // Bump the version after changing the game so tablets fetch the new copy.
-const CACHE = 'play-and-find-v1';
+const CACHE = 'play-and-find-v2';
 const FILES = ['unicorn-search.html', 'manifest.webmanifest', 'icon.svg', 'icon-192.png', 'icon-512.png'];
 
 self.addEventListener('install', e => {
