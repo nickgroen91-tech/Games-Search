@@ -5819,7 +5819,7 @@ function renderStart() {
   $('ask').textContent = label(l => T[l]['pick' + pickStep]);
   const card = (attr, id, icon, text, sel) => `<button class="world${sel ? ' sel' : ''}" data-${attr}="${id}">${pic(icon)}<span class="go">${text}</span></button>`;
   let cards = [];
-  if (pickStep === 'game') cards = (P0 ? P0.games : Object.keys(GAMES)).map(g => card('game', g, GAME_ICONS[g]() + (NO_LEVEL.has(g) ? '' : starBadge(state.stars[g], maxStars(g))), label(l => T[l].games[g]), g === state.game));
+  if (pickStep === 'game') cards = (P0 ? P0.games : Object.keys(GAMES)).map(g => card('game', g, (GAME_ICONS[g] ? GAME_ICONS[g]() : '') + (NO_LEVEL.has(g) ? '' : starBadge(state.stars[g], maxStars(g))), label(l => T[l].games[g]), g === state.game));
   if (pickStep === 'theme') cards = Object.entries(WORLDS).map(([id, w]) => card('world', id, ART[w.hero].draw(HERO[w.hero]), label(l => w.name[l]), id === state.world));
   if (pickStep === 'level') cards = Array.from({ length:maxStars(state.game) }, (_, j) => j + 1).map(n => card('level', n, levelIcon(n), label(l => T[l].levels[n]), n === state.stars[state.game]));
   $('worlds').className = 'worlds' + (cards.length > 8 ? ' n5' : cards.length > 6 ? ' n4' : cards.length % 3 === 0 ? ' n3' : '');
@@ -7722,8 +7722,8 @@ const FRIENDS = {
   castle:{ k:'cat', v:{ ...HERO.cat, pose:'sit' }, need:() => `<g transform="scale(.7)">${ITEM_ART.crown()}</g>`, dx:230 },
   forest:{ k:'owl', v:{ c:'#a0704a' }, need:() => `<g transform="scale(.42)">${ART.nest.draw(ART.nest.v())}</g>`, dx:-215 },
   studio:{ k:'bird', v:{ c:'#4dabf7' }, need:() => `${C(-4, 6, 6, '#b57bff')}${L('M2 6 V-14 L14 -10', '#b57bff', 3.5)}`, dx:-170 },
-  market:{ k:'pig', v:{}, need:() => `<g transform="scale(.42)">${ART.apple.draw({ ...ART.apple.v(), c:'#e8283c' })}</g>`, dx:190 },
-  cards:{ k:'sheep', v:{}, need:() => `<rect x="-11" y="-15" width="22" height="30" rx="4" fill="#fff" stroke="#e8283c" stroke-width="3"/><g transform="scale(.17)">${ART.heart.draw({ c:'#e8283c' })}</g>`, dx:-200 },
+  market:{ k:'pig', v:{ c:'#ffb3c6' }, need:() => `<g transform="scale(.42)">${ART.apple.draw({ ...ART.apple.v(), c:'#e8283c' })}</g>`, dx:190 },
+  cards:{ k:'sheep', v:{ f:'#495057' }, need:() => `<rect x="-11" y="-15" width="22" height="30" rx="4" fill="#fff" stroke="#e8283c" stroke-width="3"/><g transform="scale(.17)">${ART.heart.draw({ c:'#e8283c' })}</g>`, dx:-200 },
 };
 const friendArt = (p, s = 1) => { const F = FRIENDS[p]; return `<g transform="scale(${s})">${ART[F.k].draw(F.v)}${F.mud && !state.friends.has(p) ? [[-14, 10], [12, 18], [4, -4]].map(([x, y]) => E(x, y, 8, 5, '#8a5a2b', null)).join('') : ''}</g>`; };
 // Twelve gems hidden in the scenery (tap to find); a few more spots only wiggle.
